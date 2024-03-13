@@ -43,13 +43,13 @@ su_try_pwd (){
 su_brute_user_num (){
   echo "  [+] Bruteforcing $1..."
   USER=$1
-  su_try_pwd $USER "" &    #Try without password
-  su_try_pwd $USER $USER & #Try username as password
+  su_try_pwd $USER "" #&    Try without password
+  su_try_pwd $USER $USER #& Try username as password
   su_try_pwd $USER `echo $USER | rev 2>/dev/null` #&     Try reverse username as password
 
   if ! [[ -p /dev/stdin ]] && [ -f "$WORDLIST" ]; then
     while IFS='' read -r P || [ -n "${P}" ]; do # Loop through wordlist file   
-      su_try_pwd $USER $P & #Try TOP TRIES of passwords (by default 2000)
+      su_try_pwd $USER $P #& Try TOP TRIES of passwords (by default 2000)
       sleep $SLEEPPROC # To not overload the system
     done < $WORDLIST
 
